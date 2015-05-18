@@ -1,9 +1,11 @@
 package id.co.technomotion.booklogger;
 
+import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,6 +18,9 @@ public class MainActivity extends ActionBarActivity {
 
     //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
     ArrayList<String> listOfBook=new ArrayList<>();
+
+    //mendeklarasikan arrayadapter
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,9 @@ public class MainActivity extends ActionBarActivity {
         listOfBook.add("Ayat ayat cinta");
         listOfBook.add("Lima Menara");
         listOfBook.add("Tutorial Pemrograman Android");
+
+        //meng-inisiasi arrayadapter
+        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listOfBook);
 
 
     }
