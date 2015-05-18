@@ -3,8 +3,11 @@ package id.co.technomotion.booklogger;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +45,25 @@ public class MainActivity extends ActionBarActivity {
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listOfBook);
         listViewBook.setAdapter(adapter);
 
+        //mengaktifkan fungsi onItemClickListener dan onItemLongClickListener
+        listViewBook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //something happen
+                String clickedItem= (String) parent.getAdapter().getItem(position);
+                Log.d("booklogger",clickedItem);
+            }
+        });
+
+        listViewBook.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //something happen
+                String longClickedItem= (String) parent.getAdapter().getItem(position);
+                Log.d("booklogger",longClickedItem);
+                return false;
+            }
+        });
 
     }
 
