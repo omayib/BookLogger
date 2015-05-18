@@ -7,12 +7,15 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import java.util.*;
 
 public class MainActivity extends ActionBarActivity {
     Button btnSimpan;
     ListView listViewBook;
     EditText editTextInput;
+
+    //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
+    ArrayList<String> listOfBook=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,14 @@ public class MainActivity extends ActionBarActivity {
         listViewBook= (ListView) findViewById(R.id.listView_output);
         editTextInput= (EditText) findViewById(R.id.editText_input);
         btnSimpan= (Button) findViewById(R.id.btn_simpan);
+
+        //menyiapkan data
+        listOfBook.add("Laskar Pelangi");
+        listOfBook.add("5 cm");
+        listOfBook.add("Ayat ayat cinta");
+        listOfBook.add("Lima Menara");
+        listOfBook.add("Tutorial Pemrograman Android");
+
 
     }
 
