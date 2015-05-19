@@ -1,5 +1,7 @@
 package id.co.technomotion.booklogger;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -63,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
                 //something happen
                 String longClickedItem= (String) parent.getAdapter().getItem(position);
                 Log.d("booklogger",longClickedItem);
+                showDeleteDialog(longClickedItem);
                 return false;
             }
         });
@@ -108,5 +111,27 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // mmbuat alert dialog untuk fungsi hapus buku
+    private void showDeleteDialog(final String bookTitle){
+        AlertDialog.Builder deleteDialog=new AlertDialog.Builder(this);
+        deleteDialog.setMessage("Anda yakin untuk menghapus \n"+bookTitle+"?");
+        deleteDialog.setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                listOfBook.remove(bookTitle);
+                // setelah menghapus, kita perlu meng-update listview
+                adapter.notifyDataSetChanged();
+            }
+        });
+        deleteDialog.setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        deleteDialog.show();
     }
 }
