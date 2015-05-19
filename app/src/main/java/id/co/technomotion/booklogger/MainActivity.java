@@ -82,6 +82,8 @@ public class MainActivity extends ActionBarActivity {
                     listOfBook.add(title);
                     // meng-update listview
                     adapter.notifyDataSetChanged();
+                    // clear edittext
+                    editTextInput.setText("");
                 }else{
                     Toast.makeText(getApplicationContext(),"judul buku waji diisi",Toast.LENGTH_SHORT).show();
                 }
