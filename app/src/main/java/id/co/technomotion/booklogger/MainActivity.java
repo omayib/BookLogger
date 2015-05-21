@@ -21,7 +21,9 @@ import java.util.*;
 public class MainActivity extends ActionBarActivity {
     Button btnSimpan;
     ListView listViewBook;
-    EditText editTextInput;
+    EditText editTextInput_judul;
+    EditText editTextInput_pengarang;
+    EditText editTextInput_halaman;
 
     //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
     ArrayList<String> listOfBook=new ArrayList<>();
@@ -35,7 +37,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         listViewBook= (ListView) findViewById(R.id.listView_output);
-        editTextInput= (EditText) findViewById(R.id.editText_input);
+        editTextInput_judul= (EditText) findViewById(R.id.editText_inputJudul);
+        editTextInput_halaman= (EditText) findViewById(R.id.editText_inputHalaman);
+        editTextInput_pengarang= (EditText) findViewById(R.id.editText2_inputPengarang);
         btnSimpan= (Button) findViewById(R.id.btn_simpan);
 
         //menyiapkan data
@@ -44,6 +48,8 @@ public class MainActivity extends ActionBarActivity {
         listOfBook.add("Ayat ayat cinta");
         listOfBook.add("Lima Menara");
         listOfBook.add("Tutorial Pemrograman Android");
+
+
 
         //meng-inisiasi arrayadapter
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listOfBook);
@@ -75,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 //something happen if user click this button
-                String title=editTextInput.getText().toString();
+                String title=editTextInput_judul.getText().toString();
                 // dilakukan check untuk memastikan bahwa user telah menulis judul buku
                 if(!title.isEmpty()){
                     // menambahkan judul buku kedalam listOfBook
@@ -83,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
                     // meng-update listview
                     adapter.notifyDataSetChanged();
                     // clear edittext
-                    editTextInput.setText("");
+                    editTextInput_judul.setText("");
                 }else{
                     Toast.makeText(getApplicationContext(),"judul buku waji diisi",Toast.LENGTH_SHORT).show();
                 }
