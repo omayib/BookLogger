@@ -51,7 +51,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                Buku clickedItem= (Buku) parent.getAdapter().getItem(position);
+                Buku longClickedItem= (Buku) parent.getAdapter().getItem(position);
+                //editBook(longClickedItem);
 
             }
         });
@@ -60,8 +61,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                String longClickedItem = (String) parent.getAdapter().getItem(position);
-                Log.d("booklogger", longClickedItem);
+                Buku longClickedItem = (Buku) parent.getAdapter().getItem(position);
                 showDeleteDialog(longClickedItem);
                 return false;
             }
@@ -110,7 +110,7 @@ public class MainActivity extends ActionBarActivity {
                     editTextInput_halaman.setText("");
                     editTextInput_pengarang.setText("");
                 }else{
-                    Toast.makeText(getApplicationContext(),"judul buku waji diisi",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"judul buku wajib diisi",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -141,14 +141,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     // mmbuat alert dialog untuk fungsi hapus buku
-    private void showDeleteDialog(final String bookTitle){
+    private void showDeleteDialog(final Buku buku){
         AlertDialog.Builder deleteDialog=new AlertDialog.Builder(this);
-        deleteDialog.setMessage("Anda yakin untuk menghapus \n"+bookTitle+"?");
+        deleteDialog.setMessage("Anda yakin untuk menghapus?");
         deleteDialog.setPositiveButton("Ya",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                listOfBook.remove(bookTitle);
+                listOfBook.remove(buku);
                 // setelah menghapus, kita perlu meng-update listview
                 adapter.notifyDataSetChanged();
             }
