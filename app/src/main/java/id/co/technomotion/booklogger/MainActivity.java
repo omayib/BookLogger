@@ -26,10 +26,10 @@ public class MainActivity extends ActionBarActivity {
     EditText editTextInput_halaman;
 
     //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
-    ArrayList<String> listOfBook=new ArrayList<>();
+    ArrayList<Buku> listOfBook=new ArrayList<>();
 
     //mendeklarasikan arrayadapter
-    ArrayAdapter<String> adapter;
+    BukuAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +42,8 @@ public class MainActivity extends ActionBarActivity {
         editTextInput_pengarang= (EditText) findViewById(R.id.editText2_inputPengarang);
         btnSimpan= (Button) findViewById(R.id.btn_simpan);
 
-        //menyiapkan data
-        listOfBook.add("Laskar Pelangi");
-        listOfBook.add("5 cm");
-        listOfBook.add("Ayat ayat cinta");
-        listOfBook.add("Lima Menara");
-        listOfBook.add("Tutorial Pemrograman Android");
-
-
-
         //meng-inisiasi arrayadapter
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listOfBook);
+        adapter = new BukuAdapter(this, listOfBook);
         listViewBook.setAdapter(adapter);
 
         //mengaktifkan fungsi onItemClickListener dan onItemLongClickListener
@@ -60,8 +51,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                String clickedItem= (String) parent.getAdapter().getItem(position);
-                Log.d("booklogger",clickedItem);
+                Buku clickedItem= (Buku) parent.getAdapter().getItem(position);
+
             }
         });
 
@@ -69,12 +60,35 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                String longClickedItem= (String) parent.getAdapter().getItem(position);
-                Log.d("booklogger",longClickedItem);
+                String longClickedItem = (String) parent.getAdapter().getItem(position);
+                Log.d("booklogger", longClickedItem);
                 showDeleteDialog(longClickedItem);
                 return false;
             }
         });
+
+        editTextInput_judul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextInput_judul.setText("");
+            }
+        });
+
+        editTextInput_halaman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextInput_halaman.setText("");
+            }
+        });
+
+        editTextInput_pengarang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextInput_pengarang.setText("");
+            }
+        });
+
+
 
         // mengaktifkan fungsi button simpan
         btnSimpan.setOnClickListener(new View.OnClickListener() {
@@ -82,14 +96,19 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 //something happen if user click this button
                 String title=editTextInput_judul.getText().toString();
+                String pengarang=editTextInput_pengarang.getText().toString();
+                String halaman=editTextInput_halaman.getText().toString();
+
                 // dilakukan check untuk memastikan bahwa user telah menulis judul buku
                 if(!title.isEmpty()){
                     // menambahkan judul buku kedalam listOfBook
-                    listOfBook.add(title);
+                    listOfBook.add(new Buku(title, pengarang, halaman));
                     // meng-update listview
                     adapter.notifyDataSetChanged();
                     // clear edittext
                     editTextInput_judul.setText("");
+                    editTextInput_halaman.setText("");
+                    editTextInput_pengarang.setText("");
                 }else{
                     Toast.makeText(getApplicationContext(),"judul buku waji diisi",Toast.LENGTH_SHORT).show();
                 }
