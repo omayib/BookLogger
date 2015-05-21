@@ -12,8 +12,21 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText_input"
-        android:layout_gravity="center_horizontal"/>
+        android:id="@+id/editText_inputJudul"
+        android:layout_gravity="center_horizontal"
+        android:text="Masukkan judul buku" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2_inputPengarang"
+        android:text="Masukkan nama pengarang" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_inputHalaman"
+        android:text="Masukkan jumlah halaman" />
 
     <Button
         android:layout_width="match_parent"
