@@ -28,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
     //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
     ArrayList<Buku> listOfBook=new ArrayList<>();
 
+    int editItem = -1;
+
     //mendeklarasikan arrayadapter
     BukuAdapter adapter;
 
@@ -51,8 +53,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                Buku longClickedItem= (Buku) parent.getAdapter().getItem(position);
-                //editBook(longClickedItem);
+                Buku ClickedItem = (Buku) parent.getAdapter().getItem(position);
+                editBuku(ClickedItem);
 
             }
         });
@@ -64,27 +66,6 @@ public class MainActivity extends ActionBarActivity {
                 Buku longClickedItem = (Buku) parent.getAdapter().getItem(position);
                 showDeleteDialog(longClickedItem);
                 return false;
-            }
-        });
-
-        editTextInput_judul.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextInput_judul.setText("");
-            }
-        });
-
-        editTextInput_halaman.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextInput_halaman.setText("");
-            }
-        });
-
-        editTextInput_pengarang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextInput_pengarang.setText("");
             }
         });
 
@@ -102,7 +83,14 @@ public class MainActivity extends ActionBarActivity {
                 // dilakukan check untuk memastikan bahwa user telah menulis judul buku
                 if(!title.isEmpty()){
                     // menambahkan judul buku kedalam listOfBook
-                    listOfBook.add(new Buku(title, pengarang, halaman));
+                    //listOfBook.add(new Buku(title, pengarang, halaman));
+                    if(editItem > -1){
+                        listOfBook.get(editItem).judul = title;
+                        listOfBook.get(editItem).pengarang=pengarang;
+                        listOfBook.get(editItem).halaman=halaman;
+                    }else {
+                        listOfBook.add(new Buku(title, pengarang, halaman));
+                    }
                     // meng-update listview
                     adapter.notifyDataSetChanged();
                     // clear edittext
@@ -112,6 +100,8 @@ public class MainActivity extends ActionBarActivity {
                 }else{
                     Toast.makeText(getApplicationContext(),"judul buku wajib diisi",Toast.LENGTH_SHORT).show();
                 }
+
+                editItem=-1;
             }
         });
 
@@ -161,4 +151,12 @@ public class MainActivity extends ActionBarActivity {
         });
         deleteDialog.show();
     }
+
+    private void editBuku(final Buku buku){
+        editTextInput_judul.setText(buku.judul);
+        editTextInput_pengarang.setText(buku.pengarang);
+        editTextInput_halaman.setText(buku.halaman);
+        editItem = listOfBook.indexOf(buku);
+    }
+
 }
