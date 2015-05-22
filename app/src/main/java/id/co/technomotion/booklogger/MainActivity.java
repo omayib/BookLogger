@@ -21,13 +21,17 @@ import java.util.*;
 public class MainActivity extends ActionBarActivity {
     Button btnSimpan;
     ListView listViewBook;
-    EditText editTextInput;
+    EditText editTextInput_judul;
+    EditText editTextInput_pengarang;
+    EditText editTextInput_halaman;
 
     //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
-    ArrayList<String> listOfBook=new ArrayList<>();
+    ArrayList<Buku> listOfBook=new ArrayList<>();
+
+    int editItem = -1;
 
     //mendeklarasikan arrayadapter
-    ArrayAdapter<String> adapter;
+    BukuAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +39,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         listViewBook= (ListView) findViewById(R.id.listView_output);
-        editTextInput= (EditText) findViewById(R.id.editText_input);
+        editTextInput_judul= (EditText) findViewById(R.id.editText_inputJudul);
+        editTextInput_halaman= (EditText) findViewById(R.id.editText_inputHalaman);
+        editTextInput_pengarang= (EditText) findViewById(R.id.editText2_inputPengarang);
         btnSimpan= (Button) findViewById(R.id.btn_simpan);
 
-        //menyiapkan data
-        listOfBook.add("Laskar Pelangi");
-        listOfBook.add("5 cm");
-        listOfBook.add("Ayat ayat cinta");
-        listOfBook.add("Lima Menara");
-        listOfBook.add("Tutorial Pemrograman Android");
-
         //meng-inisiasi arrayadapter
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listOfBook);
+        adapter = new BukuAdapter(this, listOfBook);
         listViewBook.setAdapter(adapter);
 
         //mengaktifkan fungsi onItemClickListener dan onItemLongClickListener
@@ -54,8 +53,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                String clickedItem= (String) parent.getAdapter().getItem(position);
-                Log.d("booklogger",clickedItem);
+                Buku ClickedItem = (Buku) parent.getAdapter().getItem(position);
+                editBuku(ClickedItem);
+
             }
         });
 
@@ -63,30 +63,45 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //something happen
-                String longClickedItem= (String) parent.getAdapter().getItem(position);
-                Log.d("booklogger",longClickedItem);
+                Buku longClickedItem = (Buku) parent.getAdapter().getItem(position);
                 showDeleteDialog(longClickedItem);
                 return false;
             }
         });
+
+
 
         // mengaktifkan fungsi button simpan
         btnSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //something happen if user click this button
-                String title=editTextInput.getText().toString();
+                String title=editTextInput_judul.getText().toString();
+                String pengarang=editTextInput_pengarang.getText().toString();
+                String halaman=editTextInput_halaman.getText().toString();
+
                 // dilakukan check untuk memastikan bahwa user telah menulis judul buku
                 if(!title.isEmpty()){
                     // menambahkan judul buku kedalam listOfBook
-                    listOfBook.add(title);
+                    //listOfBook.add(new Buku(title, pengarang, halaman));
+                    if(editItem > -1){
+                        listOfBook.get(editItem).judul = title;
+                        listOfBook.get(editItem).pengarang=pengarang;
+                        listOfBook.get(editItem).halaman=halaman;
+                    }else {
+                        listOfBook.add(new Buku(title, pengarang, halaman));
+                    }
                     // meng-update listview
                     adapter.notifyDataSetChanged();
                     // clear edittext
-                    editTextInput.setText("");
+                    editTextInput_judul.setText("");
+                    editTextInput_halaman.setText("");
+                    editTextInput_pengarang.setText("");
                 }else{
-                    Toast.makeText(getApplicationContext(),"judul buku waji diisi",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"judul buku wajib diisi",Toast.LENGTH_SHORT).show();
                 }
+
+                editItem=-1;
             }
         });
 
@@ -116,14 +131,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     // mmbuat alert dialog untuk fungsi hapus buku
-    private void showDeleteDialog(final String bookTitle){
+    private void showDeleteDialog(final Buku buku){
         AlertDialog.Builder deleteDialog=new AlertDialog.Builder(this);
-        deleteDialog.setMessage("Anda yakin untuk menghapus \n"+bookTitle+"?");
+        deleteDialog.setMessage("Anda yakin untuk menghapus?");
         deleteDialog.setPositiveButton("Ya",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                listOfBook.remove(bookTitle);
+                listOfBook.remove(buku);
                 // setelah menghapus, kita perlu meng-update listview
                 adapter.notifyDataSetChanged();
             }
@@ -136,4 +151,12 @@ public class MainActivity extends ActionBarActivity {
         });
         deleteDialog.show();
     }
+
+    private void editBuku(final Buku buku){
+        editTextInput_judul.setText(buku.judul);
+        editTextInput_pengarang.setText(buku.pengarang);
+        editTextInput_halaman.setText(buku.halaman);
+        editItem = listOfBook.indexOf(buku);
+    }
+
 }
